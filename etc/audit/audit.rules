@@ -11,12 +11,15 @@
 -b 320
 
 # Feel free to add below this line. See auditctl man page
+# This rule will comply with GEN002720 and will log any failde attemp at the syscall open
+-a exit,always –S open –F success=0
 
--a exit,always -S unlink -S rmdir
--w /var/log/audit/
--w /etc/audit/auditd.conf
--w /etc/audit/audit.rules
--a exit,always -F arch=b32 -S stime -S acct -S reboot -S swapon
--a exit,always -S settimeofday -S setrlimit -S setdomainname
-# The mysql program is expected to call sched_setscheduler
--a exit,always -S sched_setparam -S sched_setscheduler -F euid!=27
+#Comenting out the default rules as this are not required by the documentation
+#-a exit,always -S unlink -S rmdir
+#-w /var/log/audit/
+#-w /etc/audit/auditd.conf
+#-w /etc/audit/audit.rules
+#-a exit,always -F arch=b32 -S stime -S acct -S reboot -S swapon
+#-a exit,always -S settimeofday -S setrlimit -S setdomainname
+## The mysql program is expected to call sched_setscheduler
+#-a exit,always -S sched_setparam -S sched_setscheduler -F euid!=27
