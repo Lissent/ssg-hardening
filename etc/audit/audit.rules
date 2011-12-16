@@ -1,0 +1,22 @@
+# This file contains the auditctl rules that are loaded
+# whenever the audit daemon is started via the initscripts.
+# The rules are simply the parameters that would be passed
+# to auditctl.
+
+# First rule - delete all
+-D
+
+# Increase the buffers to survive stress events.
+# Make this bigger for busy systems
+-b 320
+
+# Feel free to add below this line. See auditctl man page
+
+-a exit,always -S unlink -S rmdir
+-w /var/log/audit/
+-w /etc/audit/auditd.conf
+-w /etc/audit/audit.rules
+-a exit,always -F arch=b32 -S stime -S acct -S reboot -S swapon
+-a exit,always -S settimeofday -S setrlimit -S setdomainname
+# The mysql program is expected to call sched_setscheduler
+-a exit,always -S sched_setparam -S sched_setscheduler -F euid!=27
