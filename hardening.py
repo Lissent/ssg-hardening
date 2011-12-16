@@ -53,4 +53,9 @@ if __name__='__main__':
 	except OSError as error:
 		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n', str(error)
 	
-	# 
+	# Seting up permitions of /etc/cron.deny to comply with GEN003200
+	try:
+		os.chmod('/etc/cron.deny', 0700)
+		print >> sys.stdout, 'Premitions of /etc/cron.deny setup to 0700'
+	except OSError as error:
+		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n", str(error)
