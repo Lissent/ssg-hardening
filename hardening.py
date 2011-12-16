@@ -34,10 +34,23 @@ if __name__='__main__':
 		print >> sys.stderr, 'You got an OS error:\n', str(error)
 	
 	# Seting up auditd to comply with GEN002720 specifications
+	# Turning Auditd on
 	chkconfig_exit_status = os.system('chkconfig auditd on')
 	if chkconfig_ext_status == 0:
 		print >> sys.stdout, "Audit service successfully setup to start at boot time."
 	else:
 		print >> sys.stderr, "There was a problem when seting up Audit service at boot time. Exit with error code: ", chkconfig_ext_status
 		exit('error with chkconfig auditd on')
+	# Seting up the audit.rules file
+	'''
+	###FIX ME###
+	Using relative path names is bad. 
+	If this script is called form outside the folder were the remaining files are located this will not work.
+	Idealy we need a way to figure out the location of the script and the remaining files and then move to tha directory.
+	'''
+	try:
+		os.rename('./etc/audit/audit.rules', '/etc/audit/audit.rules')
+	except OSError as error:
+		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n', str(error)
+	
 	
