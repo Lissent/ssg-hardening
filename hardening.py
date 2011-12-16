@@ -33,7 +33,7 @@ if __name__='__main__':
 	except OSError as error:
 		print >> sys.stderr, 'You got an OS error:\n', str(error)
 	
-	# Seting up auditd to comply with GEN002720 specifications
+	# Seting up auditd to comply with GEN002720 GEN002740 and GEN002760 specifications
 	# Turning Auditd on
 	chkconfig_exit_status = os.system('chkconfig auditd on')
 	if chkconfig_ext_status == 0:
@@ -53,4 +53,4 @@ if __name__='__main__':
 	except OSError as error:
 		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n', str(error)
 	
-	
+	# 
