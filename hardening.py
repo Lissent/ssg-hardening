@@ -19,10 +19,13 @@ Recursive chmod.
 
 if __name__='__main__':
 	# Seting up permitions to comply with GEN003080 specifications
-	recursive_chmod('/var/spool/cron', 0600)
-	recursive_chmod('/etc/cron.d', 0600)
-	os.chmod('/etc/crontab', 0600)
-	recursive_chmod('/etc/cron.daily', 0700)
-	recursive_chmod('/etc/cron.hourly', 0700)
-	recursive_chmod('/etc/cron.monthly', 0700)
-	recursive_chmod('/etc/cron.weekly', 0700)
+	try:
+		recursive_chmod('/var/spool/cron', 0600)
+		recursive_chmod('/etc/cron.d', 0600)
+		os.chmod('/etc/crontab', 0600)
+		recursive_chmod('/etc/cron.daily', 0700)
+		recursive_chmod('/etc/cron.hourly', 0700)
+		recursive_chmod('/etc/cron.monthly', 0700)
+		recursive_chmod('/etc/cron.weekly', 0700)
+	except OSError as error:
+		print >> sys.stderr, 'You got an OS error:\n', str(error)
