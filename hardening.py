@@ -59,3 +59,9 @@ if __name__='__main__':
 		print >> sys.stdout, 'Premitions of /etc/cron.deny setup to 0700'
 	except OSError as error:
 		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n", str(error)
+	
+	# Seting up permitions of /etc/snmp/snmpd.conf to comply with GEN005320
+	try:
+		os.chmod('/etc/snmp/snmpd.conf', 0700)
+	except OSError as error:
+		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n", str(error)
