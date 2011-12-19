@@ -3,6 +3,7 @@ This scripts implements changes required to meet the specifications descrideb by
 """
 import os
 import sys
+import grp
 
 # Creating function that makes it easy to do a recunsive chmod
 def recursive_chmod(dir_name, permition):
@@ -65,13 +66,17 @@ if __name__='__main__':
 		os.chmod('/etc/snmp/snmpd.conf', 0700)
 	except OSError as error:
 		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n", str(error)
-	'''
-	# for the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
-	# Seting up ownership of snmpd.conf and .mib to comply with GEN005360
+		
+	# Seting up ownership of snmpd.conf and .mib to comply with GEN005360 root and sys
+	# This is an alternative to hardcoding the group number. No need to do that for root as its always 0
+	sys_gid = grp.getgrnam('sys')[2]
+	root_uid = 0
 	try:
-		os.chown(path, uid, gid)
+		os.chown('/etc/snmp/snmpd.conf', root_uid, sys_gid)
 	except OSError as error:
 		print>> sys.stderr, "There was a problem seting up permitions for --------:\n", str(error)
+	'''
+	# for the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
 	'''
 	
 	# Seting up ownership and permitions of /etc/rsyslog.conf to comply with GEN005400.
@@ -88,7 +93,3 @@ if __name__='__main__':
 		os.chown('/etc/security/access.conf', 0640)
 	except OSError as error:
 		print >> sys.stderr, "There was a problem setting up the permitions of /etc/security/access.conf:\n", str(error)
-	
-	
-	
-	
