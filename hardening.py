@@ -65,3 +65,11 @@ if __name__='__main__':
 		os.chmod('/etc/snmp/snmpd.conf', 0700)
 	except OSError as error:
 		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n", str(error)
+	'''
+	# for the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
+	# Seting up ownership of snmpd.conf and .mib to comply with GEN005360
+	try:
+		os.chown(path, uid, gid)
+	except OSError as error:
+		print>> sys.stderr, "There was a problem seting up permitions for --------:\n", str(error)
+	'''
