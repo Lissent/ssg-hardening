@@ -73,3 +73,22 @@ if __name__='__main__':
 	except OSError as error:
 		print>> sys.stderr, "There was a problem seting up permitions for --------:\n", str(error)
 	'''
+	
+	# Seting up ownership and permitions of /etc/rsyslog.conf to comply with GEN005400.
+	"Needs to be root and permition 600"
+	try:
+		os.chown('/etc/rsyslog.conf', 0, 0)
+		os.chmod('/etc/rsyslog.conf', 0640)
+	except OSError as error:
+		print >> sys.stderr, "There was a problem setting up the ownership and/or permitions of /etc/rsyslog.conf:\n", str(error)
+		
+	# Seting up file permitions for /etc/security/access.conf to comply with LNX00440
+	"Note that by default on a ssg 6.1 the permition of this file is 640"
+	try:
+		os.chown('/etc/security/access.conf', 0640)
+	except OSError as error:
+		print >> sys.stderr, "There was a problem setting up the permitions of /etc/security/access.conf:\n", str(error)
+	
+	
+	
+	
