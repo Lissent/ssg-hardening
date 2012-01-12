@@ -71,7 +71,7 @@ def gen580():
 		print >> sys.stderr, "There was a problemm setuing up the password configuration files:\n", str(error)
 
 
-def gen2720_gen2740_gen2760():
+def audit():
 	'''
 	This fuction configurs auditd to comply with GEN002720 GEN002740 and GEN002760 specifications
 	'''
@@ -106,7 +106,7 @@ def gen3200():
 		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n", str(error)
 
 
-def gen5320_gen5360():
+def snmp():
 	'''
 	Seting up permitions of /etc/snmp/snmpd.conf to comply with GEN005320.
 	Seting up ownership of snmpd.conf and .mib to comply with GEN005360 root and sys
@@ -168,36 +168,69 @@ def menu_setup():
 	# set the desire main options
 	parser.add_option("-f", "--file", dest="filename",
 										help="Use FILE as destination istead of the system syslog", metavar="FILE")
+										
 	parser.add_option("-a", "--all",
 										action='store_true', dest='all',
 										help='Turn on all the compliance modules')
+										
 	# Set up a menu group and its options
 	group = OptionGroup(parser, "Compliance modules options",
 	                    "This options enable specific modules on demand. The --all option will enable all of this options")
+	
 	# Creat the options for the Complinace module group
 	group.add_option("--gen3080", action="store_true", dest='gen3080',
 									help="Fixes file permitions to comply with GEN3080")
+									
 	group.add_option('--gen580', action='store_true', dest='gen580',
 									help='Set-up pam.d to comply with GEN580')
+									
 	group.add_option('--audit', action='store_true', dest='audit',
 									help='Set-up audit.d to comply with gen2720, gen2740 and gen2760')
+									
 	group.add_option('--gen3200', action='store_true', dest='gen3200',
 									help='Set-up permition for cron.deny to comply with GEN3200')
+									
 	group.add_option('--snmp', action='store_true', dest='snmp',
 									help='Set-up permition and ownership of the snmp files to comply with GEN5320 and GEN5360')
+									
 	group.add_option('--gen5400', action='store_true', dest='gen5400',
 									help='Set-up permitions and ownership of the loging system to comply with GEN4500')
+									
 	group.add_option('--lnx440', action='store_true', dest='lnx440',
 									help='Set-up ownership of access.conf to comply with LNX440')
 	
 	parser.add_option_group(group)
 	
 	# Parse the comand line
-	(options, args) = parser.parse_args()
+	return(parser.parse_args())
 
 
 def main():
-	menu_setup()
+	(options, agrs) = menu_setup()
+	# Checks if lunching all options is desired. If so sets all of them to true
+	if options.all == True:
+		options.gen3080 = True
+		options.gen580 = True
+		options.audit = True
+		options.gen3200 = True
+		options.snmp = True
+		options.gen5400 = True
+		options.lnx440 = True
+	# Lunch individual options as requested.
+	if options.gen3080:
+		gen3080()
+	if options.gen580:
+		gen580()
+	if options.audit:
+		audit()
+	if options.gen3200:
+		gen3200()
+	if options.snmp:
+		snmp()
+	if options.gen5400():
+		gen5400()
+	if options.lnx440():
+		lnx440()
 
 
 if __name__ == '__main__':
