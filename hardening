@@ -27,18 +27,22 @@ from optparse import OptionParser
 from optparse import OptionGroup
 
 
-def recursive_chmod(dir_name, permission):
+def recursive_chmod(name, permission):
 	"""
 	Recursive chmod.
 	This function takes two arguments the first one is the name of the folder and the second is the permission you like to recursively set.
 	###FIX-ME### I ONLY WORK WITH FOLDERS. I DONT WORK IF YOU PASS ME A FILENAME
 	"""
-	for root, dirs, files in os.walk(dir_name):
-		print >> sys.stdout, 'Changing permissions for folder:\t\t', root
-		os.chmod(root, permission)
-		for file in files:
-			print >> sys.stdout, 'Changing permission for file:\t\t', os.path.join(root, file)
-			os.chmod(os.path.join(root, file), permission)
+	if os.path.isfile(name):
+		print >> sys.stdout, "Changing permissions for file:\t\t", name
+		os.chmod(name, permission)
+	if os.path.isdir(name):
+		for root, dirs, files in os.walk(name):
+			print >> sys.stdout, 'Changing permissions for folder:\t\t', root
+			os.chmod(root, permission)
+			for file in files:
+				print >> sys.stdout, 'Changing permission for file:\t\t', os.path.join(root, file)
+				os.chmod(os.path.join(root, file), permission)
 
 
 def gen3080():
@@ -50,7 +54,8 @@ def gen3080():
 	try:
 		recursive_chmod('/var/spool/cron', 0600)
 		recursive_chmod('/etc/cron.d', 0600)
-		os.chmod('/etc/crontab', 0600)
+		recursive_chmod('/etc/crontab', 0600)
+		#os.chmod('/etc/crontab', 0600)
 		recursive_chmod('/etc/cron.daily', 0700)
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
@@ -68,7 +73,7 @@ def gen580():
 	try:
 		shutil.copy2('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 		os.chown('/etc/pam.d/system-auth-ac', 0, 0)
-		os.chmod('/etc/pam.d/system-auth-ac', 0644)
+		recursive_chmod('/etc/pam.d/system-auth-ac', 0644)
 	except OSError:
 		print >> sys.stderr, "There was a problem setuing up the password configuration files:\n"
 
@@ -94,7 +99,7 @@ def audit():
 	try:
 		shutil.copy2('./etc/audit/audit.rules', '/etc/audit/audit.rules')
 		os.chown('/etc/audit/audit.rules', 0, 0)
-		os.chmod('/etc/audit/audit.rules', 0640)
+		recursive_chmod('/etc/audit/audit.rules', 0640)
 	except OSError:
 		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n'
 
@@ -104,8 +109,7 @@ def gen3200():
 	Seting up permissions of /etc/cron.deny to comply with GEN003200
 	'''
 	try:
-		os.chmod('/etc/cron.deny', 0700)
-		print >> sys.stdout, 'Premitions of /etc/cron.deny setup to 0700'
+		recursive_chmod('/etc/cron.deny', 0700)
 	except OSError:
 		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n"
 
@@ -116,7 +120,7 @@ def snmp():
 	Seting up ownership of snmpd.conf and .mib to comply with GEN005360 root and sys
 	'''
 	try:
-		os.chmod('/etc/snmp/snmpd.conf', 0700)
+		recursive_chmod('/etc/snmp/snmpd.conf', 0700)
 	except OSError:
 		print >> sys.stderr, "There was a problem seting up permissions for /etc/snmp/snmpd.conf:\n"
 		
@@ -141,7 +145,7 @@ def gen5400():
 	'''
 	try:
 		os.chown('/etc/rsyslog.conf', 0, 0)
-		os.chmod('/etc/rsyslog.conf', 0640)
+		recursive_chmod('/etc/rsyslog.conf', 0640)
 	except OSError:
 		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n"
 
@@ -150,7 +154,7 @@ def lnx440():
 	# Seting up file permissions for /etc/security/access.conf to comply with LNX00440
 	"Note that by default on a ssg 6.1 the permission of this file is 640"
 	try:
-		os.chmod('/etc/security/access.conf', 0640)
+		recursive_chmod('/etc/security/access.conf', 0640)
 	except OSError:
 		print >> sys.stderr, "There was a problem setting up the permissions of /etc/security/access.conf:\n"
 
