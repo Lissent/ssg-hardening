@@ -68,8 +68,10 @@ def gen580():
 	try:
 		shutil.copy2('./etc/pam.d/system-auth', '/etc/pam.d/system-auth')
 		os.chown('/etc/pam.d/system-auth', 0, 0)
+		os.chmod('/etc/pam.d/system-auth', 0777)
 		shutil.copy2('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 		os.chown('/etc/pam.d/system-auth-ac', 0, 0)
+		os.chmod('/etc/pam.d/system-auth-ac', 0644)
 	except OSError:
 		print >> sys.stderr, "There was a problem setuing up the password configuration files:\n"
 
@@ -95,6 +97,7 @@ def audit():
 	try:
 		shutil.copy2('./etc/audit/audit.rules', '/etc/audit/audit.rules')
 		os.chown('/etc/audit/audit.rules', 0, 0)
+		os.chmod('/etc/audit/audit.rules', 0640)
 	except OSError:
 		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n'
 
