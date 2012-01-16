@@ -68,7 +68,7 @@ def gen580():
 		os.rename('./etc/pam.d/system-auth', '/etc/pam.d/system-auth')
 		os.rename('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 	except OSError:
-		print >> sys.stderr, "There was a problemm setuing up the password configuration files:\n"
+		print >> sys.stderr, "There was a problem setuing up the password configuration files:\n"
 
 
 def audit():
@@ -146,7 +146,7 @@ def lnx440():
 	# Seting up file permissions for /etc/security/access.conf to comply with LNX00440
 	"Note that by default on a ssg 6.1 the permition of this file is 640"
 	try:
-		os.chown('/etc/security/access.conf', 0640)
+		os.chmod('/etc/security/access.conf', 0640)
 	except OSError:
 		print >> sys.stderr, "There was a problem setting up the permissions of /etc/security/access.conf:\n"
 
