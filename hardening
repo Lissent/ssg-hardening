@@ -37,7 +37,7 @@ def recursive_chmod(dir_name, permission):
 		print >> sys.stdout, 'Changing permissions for folder:\t\t', root
 		os.chmod(root, permission)
 		for file in files:
-			print >> sys.stdout, 'Changing folder for file:\t\t', os.path.join(root, file)
+			print >> sys.stdout, 'Changing permission for file:\t\t', os.path.join(root, file)
 			os.chmod(os.path.join(root, file), permission)
 
 
