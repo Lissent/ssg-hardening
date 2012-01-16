@@ -156,7 +156,7 @@ def menu_setup():
 	usage = "usage: %prog [options]"
 	# setup the parser and the defaul values
 	parser = OptionParser()
-	parser.set_defaults(all=False)
+	parser.set_defaults(all=True)
 	parser.set_defaults(gen3080=False)
 	parser.set_defaults(gen580=False)
 	parser.set_defaults(audit=False)
@@ -171,7 +171,7 @@ def menu_setup():
 										
 	parser.add_option("-a", "--all",
 										action='store_true', dest='all',
-										help='Turn on all the compliance modules')
+										help='Turn on all the compliance modules - This is the DEFAULT')
 										
 	# Set up a menu group and its options
 	group = OptionGroup(parser, "Compliance modules options",
