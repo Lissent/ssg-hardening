@@ -165,7 +165,7 @@ def lnx440():
 def menu_setup():
 	# setup usage message
 	usage = "usage: %prog [options]"
-	version="%prog 0.8"
+	version="%prog 1.0-rc1"
 	# setup the parser and the defaul values
 	parser = OptionParser(usage=usage, version=version)
 	parser.set_defaults(all=True)
