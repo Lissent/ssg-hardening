@@ -27,18 +27,18 @@ from optparse import OptionParser
 from optparse import OptionGroup
 
 
-def recursive_chmod(dir_name, permition):
+def recursive_chmod(dir_name, permission):
 	"""
 	Recursive chmod.
-	This function takes two arguments the first one is the name of the folder and the second is the permition you like to recursively set.
+	This function takes two arguments the first one is the name of the folder and the second is the permission you like to recursively set.
 	###FIX-ME### I ONLY WORK WITH FOLDERS. I DONT WORK IF YOU PASS ME A FILENAME
 	"""
 	for root, dirs, files in os.walk(dir_name):
 		print >> sys.stdout, 'Changing permissions for folder:\t\t', root
-		os.chmod(root, permition)
+		os.chmod(root, permission)
 		for file in files:
 			print >> sys.stdout, 'Changing folder for file:\t\t', os.path.join(root, file)
-			os.chmod(os.path.join(root, file), permition)
+			os.chmod(os.path.join(root, file), permission)
 
 
 def gen3080():
@@ -148,7 +148,7 @@ def gen5400():
 
 def lnx440():
 	# Seting up file permissions for /etc/security/access.conf to comply with LNX00440
-	"Note that by default on a ssg 6.1 the permition of this file is 640"
+	"Note that by default on a ssg 6.1 the permission of this file is 640"
 	try:
 		os.chmod('/etc/security/access.conf', 0640)
 	except OSError:
@@ -193,10 +193,10 @@ def menu_setup():
 									help='Set-up audit.d to comply with gen2720, gen2740 and gen2760')
 									
 	group.add_option('--gen3200', action='store_true', dest='gen3200',
-									help='Set-up permition for cron.deny to comply with GEN3200')
+									help='Set-up permission for cron.deny to comply with GEN3200')
 									
 	group.add_option('--snmp', action='store_true', dest='snmp',
-									help='Set-up permition and ownership of the snmp files to comply with GEN5320 and GEN5360')
+									help='Set-up permission and ownership of the snmp files to comply with GEN5320 and GEN5360')
 									
 	group.add_option('--gen5400', action='store_true', dest='gen5400',
 									help='Set-up permissions and ownership of the loging system to comply with GEN4500')
