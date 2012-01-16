@@ -55,7 +55,6 @@ def gen3080():
 		recursive_chmod('/var/spool/cron', 0600)
 		recursive_chmod('/etc/cron.d', 0600)
 		recursive_chmod('/etc/crontab', 0600)
-		#os.chmod('/etc/crontab', 0600)
 		recursive_chmod('/etc/cron.daily', 0700)
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
@@ -71,6 +70,7 @@ def gen580():
 	# need to force all users to change password
 	'''
 	try:
+		print >> sys.stdout, "Seting up system-auth-ac"
 		shutil.copy2('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 		os.chown('/etc/pam.d/system-auth-ac', 0, 0)
 		recursive_chmod('/etc/pam.d/system-auth-ac', 0644)
@@ -97,6 +97,7 @@ def audit():
 	Idealy we need a way to figure out the location of the script and the remaining files and then move to tha directory.
 	'''
 	try:
+		print >> sys.stdout, "Seting up auditd rules"
 		shutil.copy2('./etc/audit/audit.rules', '/etc/audit/audit.rules')
 		os.chown('/etc/audit/audit.rules', 0, 0)
 		recursive_chmod('/etc/audit/audit.rules', 0640)
@@ -128,6 +129,7 @@ def snmp():
 	sys_gid = grp.getgrnam('sys')[2]
 	root_uid = 0
 	try:
+		print >> sys.stderr, "Changing ownership of snmpd config file"
 		os.chown('/etc/snmp/snmpd.conf', root_uid, sys_gid)
 	except OSError:
 		print>> sys.stderr, "There was a problem seting up permissions for --------:\n"
@@ -144,6 +146,7 @@ def gen5400():
 	Need to be sure we only use rsyslog
 	'''
 	try:
+		print >> sys.stdout, "Seting up permitions and ownership of rsyslog.conf"
 		os.chown('/etc/rsyslog.conf', 0, 0)
 		recursive_chmod('/etc/rsyslog.conf', 0640)
 	except OSError:
