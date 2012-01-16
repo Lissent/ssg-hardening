@@ -54,8 +54,8 @@ def gen3080():
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
 		recursive_chmod('/etc/cron.weekly', 0700)
-	except OSError as error:
-		print >> sys.stderr, 'You got an OS error:\n', str(error)
+	except OSError:
+		print >> sys.stderr, 'You got an OS error:\n'
 
 
 def gen580():
@@ -67,8 +67,8 @@ def gen580():
 	try:
 		os.rename('./etc/pam.d/system-auth', '/etc/pam.d/system-auth')
 		os.rename('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
-	except OSError as error:
-		print >> sys.stderr, "There was a problemm setuing up the password configuration files:\n", str(error)
+	except OSError:
+		print >> sys.stderr, "There was a problemm setuing up the password configuration files:\n"
 
 
 def audit():
@@ -91,8 +91,8 @@ def audit():
 	'''
 	try:
 		os.rename('./etc/audit/audit.rules', '/etc/audit/audit.rules')
-	except OSError as error:
-		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n', str(error)
+	except OSError:
+		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n'
 
 
 def gen3200():
@@ -102,8 +102,8 @@ def gen3200():
 	try:
 		os.chmod('/etc/cron.deny', 0700)
 		print >> sys.stdout, 'Premitions of /etc/cron.deny setup to 0700'
-	except OSError as error:
-		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n", str(error)
+	except OSError:
+		print >> sys.stderr, "There was a problem seting up premitions for /etc/cron.deny error:\n"
 
 
 def snmp():
@@ -113,16 +113,16 @@ def snmp():
 	'''
 	try:
 		os.chmod('/etc/snmp/snmpd.conf', 0700)
-	except OSError as error:
-		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n", str(error)
+	except OSError:
+		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n"
 		
 	# This is an alternative to hardcoding the group number. No need to do that for root as its always 0
 	sys_gid = grp.getgrnam('sys')[2]
 	root_uid = 0
 	try:
 		os.chown('/etc/snmp/snmpd.conf', root_uid, sys_gid)
-	except OSError as error:
-		print>> sys.stderr, "There was a problem seting up permitions for --------:\n", str(error)
+	except OSError:
+		print>> sys.stderr, "There was a problem seting up permitions for --------:\n"
 	'''
 	###FIX-ME###
 	# For the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
@@ -138,8 +138,8 @@ def gen5400():
 	try:
 		os.chown('/etc/rsyslog.conf', 0, 0)
 		os.chmod('/etc/rsyslog.conf', 0640)
-	except OSError as error:
-		print >> sys.stderr, "There was a problem setting up the ownership and/or permitions of /etc/rsyslog.conf:\n", str(error)
+	except OSError:
+		print >> sys.stderr, "There was a problem setting up the ownership and/or permitions of /etc/rsyslog.conf:\n"
 
 
 def lnx440():
@@ -147,8 +147,8 @@ def lnx440():
 	"Note that by default on a ssg 6.1 the permition of this file is 640"
 	try:
 		os.chown('/etc/security/access.conf', 0640)
-	except OSError as error:
-		print >> sys.stderr, "There was a problem setting up the permitions of /etc/security/access.conf:\n", str(error)
+	except OSError:
+		print >> sys.stderr, "There was a problem setting up the permitions of /etc/security/access.conf:\n"
 
 
 def menu_setup():
