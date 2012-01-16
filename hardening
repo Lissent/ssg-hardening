@@ -33,16 +33,16 @@ def recursive_chmod(dir_name, permition):
 	###FIX-ME### I ONLY WORK WITH FOLDERS. I DONT WORK IF YOU PASS ME A FILENAME
 	"""
 	for root, dirs, files in os.walk(dir_name):
-		print >> sys.stdout, 'Changing permitions for forder:\t\t', root
+		print >> sys.stdout, 'Changing permissions for folder:\t\t', root
 		os.chmod(root, permition)
 		for file in files:
-			print >> sys.stdout, 'Changing permitions for file:\t\t', os.path.join(root, file)
+			print >> sys.stdout, 'Changing folder for file:\t\t', os.path.join(root, file)
 			os.chmod(os.path.join(root, file), permition)
 
 
 def gen3080():
 	'''
-	Seting up permitions to comply with GEN003080 specifications
+	Seting up permissions to comply with GEN003080 specifications
 	# Attention if you don't set the x bit on folders and you need to run this script a second time
 	# You will need to run it as root
 	'''
@@ -77,7 +77,7 @@ def audit():
 	'''
 	# TURNING AUDITD ON
 	chkconfig_exit_status = os.system('chkconfig auditd on')
-	if chkconfig_ext_status == 0:
+	if chkconfig_exit_status == 0:
 		print >> sys.stdout, "Audit service successfully setup to start at boot time."
 	else:
 		print >> sys.stderr, "There was a problem when seting up Audit service at boot time. Exit with error code: ", chkconfig_ext_status
@@ -97,7 +97,7 @@ def audit():
 
 def gen3200():
 	'''
-	Seting up permitions of /etc/cron.deny to comply with GEN003200
+	Seting up permissions of /etc/cron.deny to comply with GEN003200
 	'''
 	try:
 		os.chmod('/etc/cron.deny', 0700)
@@ -108,13 +108,13 @@ def gen3200():
 
 def snmp():
 	'''
-	Seting up permitions of /etc/snmp/snmpd.conf to comply with GEN005320.
+	Seting up permissions of /etc/snmp/snmpd.conf to comply with GEN005320.
 	Seting up ownership of snmpd.conf and .mib to comply with GEN005360 root and sys
 	'''
 	try:
 		os.chmod('/etc/snmp/snmpd.conf', 0700)
 	except OSError:
-		print >> sys.stderr, "There was a problem seting up permitions for /etc/snmp/snmpd.conf:\n"
+		print >> sys.stderr, "There was a problem seting up permissions for /etc/snmp/snmpd.conf:\n"
 		
 	# This is an alternative to hardcoding the group number. No need to do that for root as its always 0
 	sys_gid = grp.getgrnam('sys')[2]
@@ -122,7 +122,7 @@ def snmp():
 	try:
 		os.chown('/etc/snmp/snmpd.conf', root_uid, sys_gid)
 	except OSError:
-		print>> sys.stderr, "There was a problem seting up permitions for --------:\n"
+		print>> sys.stderr, "There was a problem seting up permissions for --------:\n"
 	'''
 	###FIX-ME###
 	# For the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
@@ -131,7 +131,7 @@ def snmp():
 
 def gen5400():
 	'''
-	Seting up ownership and permitions of /etc/rsyslog.conf to comply with GEN005400.
+	Seting up ownership and permissions of /etc/rsyslog.conf to comply with GEN005400.
 	###FIX ME###
 	Need to be sure we only use rsyslog
 	'''
@@ -139,16 +139,16 @@ def gen5400():
 		os.chown('/etc/rsyslog.conf', 0, 0)
 		os.chmod('/etc/rsyslog.conf', 0640)
 	except OSError:
-		print >> sys.stderr, "There was a problem setting up the ownership and/or permitions of /etc/rsyslog.conf:\n"
+		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n"
 
 
 def lnx440():
-	# Seting up file permitions for /etc/security/access.conf to comply with LNX00440
+	# Seting up file permissions for /etc/security/access.conf to comply with LNX00440
 	"Note that by default on a ssg 6.1 the permition of this file is 640"
 	try:
 		os.chown('/etc/security/access.conf', 0640)
 	except OSError:
-		print >> sys.stderr, "There was a problem setting up the permitions of /etc/security/access.conf:\n"
+		print >> sys.stderr, "There was a problem setting up the permissions of /etc/security/access.conf:\n"
 
 
 def menu_setup():
@@ -180,7 +180,7 @@ def menu_setup():
 	
 	# Creat the options for the Complinace module group
 	group.add_option("--gen3080", action="store_true", dest='gen3080',
-									help="Fixes file permitions to comply with GEN3080")
+									help="Fixes file permissions to comply with GEN3080")
 									
 	group.add_option('--gen580', action='store_true', dest='gen580',
 									help='Set-up pam.d to comply with GEN580')
@@ -195,7 +195,7 @@ def menu_setup():
 									help='Set-up permition and ownership of the snmp files to comply with GEN5320 and GEN5360')
 									
 	group.add_option('--gen5400', action='store_true', dest='gen5400',
-									help='Set-up permitions and ownership of the loging system to comply with GEN4500')
+									help='Set-up permissions and ownership of the loging system to comply with GEN4500')
 									
 	group.add_option('--lnx440', action='store_true', dest='lnx440',
 									help='Set-up ownership of access.conf to comply with LNX440')
@@ -235,9 +235,9 @@ def main():
 		gen3200()
 	if options.snmp:
 		snmp()
-	if options.gen5400():
+	if options.gen5400:
 		gen5400()
-	if options.lnx440():
+	if options.lnx440:
 		lnx440()
 
 
