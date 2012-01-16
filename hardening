@@ -66,9 +66,6 @@ def gen580():
 	# need to force all users to change password
 	'''
 	try:
-		shutil.copy2('./etc/pam.d/system-auth', '/etc/pam.d/system-auth')
-		os.chown('/etc/pam.d/system-auth', 0, 0)
-		os.chmod('/etc/pam.d/system-auth', 0777)
 		shutil.copy2('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 		os.chown('/etc/pam.d/system-auth-ac', 0, 0)
 		os.chmod('/etc/pam.d/system-auth-ac', 0644)
