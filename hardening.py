@@ -207,6 +207,13 @@ def menu_setup():
 
 def main():
 	(options, agrs) = menu_setup()
+	
+	"""Need a better way to check for module otpinos"""
+	option_list = [options.gen3080, options.gen580, options.audit, options.gen3200, options.snmp, options.gen5400, options.lnx440]
+	for item in option_list:
+		if item == True:
+			options.all = False
+			
 	# Checks if lunching all options is desired. If so sets all of them to true
 	if options.all == True:
 		options.gen3080 = True
