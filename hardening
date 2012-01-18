@@ -146,9 +146,15 @@ def gen5400():
 	Need to be sure we only use rsyslog
 	'''
 	try:
+		# Changing permission and ownership of rsyslog
 		print >> sys.stdout, "Seting up permitions and ownership of rsyslog.conf"
 		os.chown('/etc/rsyslog.conf', 0, 0)
 		recursive_chmod('/etc/rsyslog.conf', 0640)
+
+		# Changing permission and ownership of syslog
+		print >> sys.stdout, "Seting up permission and ownership of syslog"
+		os.chown('/etc/syslog.conf', 0, 0)
+		recursive_chmod('/etc/syslog.conf', 0640)
 	except OSError:
 		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n"
 
