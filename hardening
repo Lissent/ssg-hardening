@@ -61,6 +61,7 @@ def gen3080():
 		recursive_chmod('/etc/cron.weekly', 0700)
 		subprocess.check_call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
 		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
+		recursive_chmod('/var/log/', 0640)
 	except OSError:
 		print >> sys.stderr, 'You got an OS error'
 	except subprocess.CalledProcessError, error:
