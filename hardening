@@ -23,6 +23,7 @@ import os
 import sys
 import grp
 import shutil
+import subprocess
 from optparse import OptionParser
 from optparse import OptionGroup
 
@@ -30,8 +31,7 @@ from optparse import OptionGroup
 def recursive_chmod(name, permission):
 	"""
 	Recursive chmod.
-	This function takes two arguments the first one is the name of the folder and the second is the permission you like to recursively set.
-	###FIX-ME### I ONLY WORK WITH FOLDERS. I DONT WORK IF YOU PASS ME A FILENAME
+	This function takes two arguments the first one is the name of the folder or file and the second is the permission you like to recursively set.
 	"""
 	if os.path.isfile(name):
 		print >> sys.stdout, "Changing permissions for file:\t\t", name
@@ -59,8 +59,12 @@ def gen3080():
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
 		recursive_chmod('/etc/cron.weekly', 0700)
+		subprocess.check_call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
+		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
 	except OSError:
-		print >> sys.stderr, 'You got an OS error:\n'
+		print >> sys.stderr, 'You got an OS error'
+	except subprocess.CalledProcessError, error:
+		print >> sys.stderr, error
 
 
 def gen580():
@@ -142,8 +146,6 @@ def snmp():
 def gen5400():
 	'''
 	Seting up ownership and permissions of /etc/rsyslog.conf to comply with GEN005400.
-	###FIX ME###
-	Need to be sure we only use rsyslog
 	'''
 	try:
 		# Changing permission and ownership of rsyslog
