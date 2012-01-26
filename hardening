@@ -59,11 +59,15 @@ def gen3080():
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
 		recursive_chmod('/etc/cron.weekly', 0700)
+	except OSError:
+		print >> sys.stderr, 'You got an OS error'
+
+		
+def gen1260():
+	try:
 		subprocess.check_call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
 		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
 		recursive_chmod('/var/log/', 0640)
-	except OSError:
-		print >> sys.stderr, 'You got an OS error'
 	except subprocess.CalledProcessError, error:
 		print >> sys.stderr, error
 
@@ -179,6 +183,7 @@ def menu_setup():
 	parser = OptionParser(usage=usage, version=version)
 	parser.set_defaults(all=True)
 	parser.set_defaults(gen3080=False)
+	parser.set_defaults(gen1260=False)
 	parser.set_defaults(gen580=False)
 	parser.set_defaults(audit=False)
 	parser.set_defaults(gen3200=False)
@@ -201,6 +206,9 @@ def menu_setup():
 	# Creat the options for the Complinace module group
 	group.add_option("--gen3080", action="store_true", dest='gen3080',
 									help="Fixes file permissions to comply with GEN3080")
+	
+	group.add_option('--gen1260', action='store_true', dest='gen1260',
+									help='Set-up permitions to comply with GEN001260')
 									
 	group.add_option('--gen580', action='store_true', dest='gen580',
 									help='Set-up pam.d to comply with GEN580')
@@ -230,7 +238,7 @@ def main():
 	(options, agrs) = menu_setup()
 	
 	"""Need a better way to check for module otpinos"""
-	option_list = [options.gen3080, options.gen580, options.audit, options.gen3200, options.snmp, options.gen5400, options.lnx440]
+	option_list = [options.gen3080, options.gen1260, options.gen580, options.audit, options.gen3200, options.snmp, options.gen5400, options.lnx440]
 	for item in option_list:
 		if item == True:
 			options.all = False
@@ -238,6 +246,7 @@ def main():
 	# Checks if lunching all options is desired. If so sets all of them to true
 	if options.all == True:
 		options.gen3080 = True
+		options.gen1260 = True
 		options.gen580 = True
 		options.audit = True
 		options.gen3200 = True
@@ -247,6 +256,8 @@ def main():
 	# Lunch individual options as requested.
 	if options.gen3080:
 		gen3080()
+	if options.gen1260:
+		gen1260()
 	if options.gen580:
 		gen580()
 	if options.audit:
