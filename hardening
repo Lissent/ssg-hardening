@@ -70,8 +70,8 @@ def gen1260():
 		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
 		print >> sys.stdout, "Configuring /etc/cron.daily/rpm so that installed rpm logs are created with permission 0640"
 		recursive_chmod('/var/log/', 0640)
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, error
+	except:
+		print >> sys.stderr, "There was a problem seting up gen1260"
 
 
 def gen580():
