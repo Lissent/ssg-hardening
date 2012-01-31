@@ -194,14 +194,14 @@ def menu_setup():
 	parser.set_defaults(snmp=False)
 	parser.set_defaults(gen5400=False)
 	parser.set_defaults(lnx440=False)
+	parser.set_defaults(verbose=True)
 	
-	# set the desire main options
-	parser.add_option("-f", "--file", dest="filename",
-										help="Use FILE as destination istead of the system syslog", metavar="FILE")
-										
-	parser.add_option("-a", "--all",
-										action='store_true', dest='all',
+	# set the desire main options										
+	parser.add_option("-a", "--all", action='store_true', dest='all',
 										help='Turn on all the compliance modules - This is the DEFAULT')
+
+	parser.add_option('-q', '--quiet', action='store_false', dest='verbose',
+										help="Only error messages will be printed")
 										
 	# Set up a menu group and its options
 	group = OptionGroup(parser, "Compliance modules options",
@@ -240,6 +240,10 @@ def menu_setup():
 
 def main():
 	(options, agrs) = menu_setup()
+	
+	if options.verbose == False:
+		f = open(os.devnull, 'w')
+		sys.stdout = f
 	
 	"""Need a better way to check for module otpinos"""
 	option_list = [options.gen3080, options.gen1260, options.gen580, options.audit, options.gen3200, options.snmp, options.gen5400, options.lnx440]
