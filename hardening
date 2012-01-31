@@ -59,14 +59,16 @@ def gen3080():
 		recursive_chmod('/etc/cron.hourly', 0700)
 		recursive_chmod('/etc/cron.monthly', 0700)
 		recursive_chmod('/etc/cron.weekly', 0700)
-	except OSError:
-		print >> sys.stderr, 'You got an OS error'
+	except OSError, error:
+		print >> sys.stderr, error
 
 		
 def gen1260():
 	try:
 		subprocess.check_call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
+		print >> sys.stdout, "Configuring /etc/logrotate.conf so that rotated files are created with permission 0640"
 		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
+		print >> sys.stdout, "Configuring /etc/cron.daily/rpm so that installed rpm logs are created with permission 0640"
 		recursive_chmod('/var/log/', 0640)
 	except subprocess.CalledProcessError, error:
 		print >> sys.stderr, error
@@ -90,6 +92,8 @@ def gen580():
 def audit():
 	'''
 	This fuction configurs auditd to comply with GEN002720 GEN002740 and GEN002760 specifications
+	###MAKE ME BETTER###
+	# I could use subprocess.check_call for this
 	'''
 	# TURNING AUDITD ON
 	chkconfig_exit_status = os.system('chkconfig auditd on')
@@ -110,8 +114,8 @@ def audit():
 		shutil.copy2('./etc/audit/audit.rules', '/etc/audit/audit.rules')
 		os.chown('/etc/audit/audit.rules', 0, 0)
 		recursive_chmod('/etc/audit/audit.rules', 0640)
-	except OSError:
-		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n'
+	except OSError, error:
+		print >> sys.stderr, 'There was a problem seting up the Audit rules file:\n', error
 
 
 def gen3200():
@@ -178,7 +182,7 @@ def lnx440():
 def menu_setup():
 	# setup usage message
 	usage = "usage: %prog [options]"
-	version="%prog 1.0-rc1"
+	version="%prog 1.0-rc2"
 	# setup the parser and the defaul values
 	parser = OptionParser(usage=usage, version=version)
 	parser.set_defaults(all=True)
