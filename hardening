@@ -65,13 +65,13 @@ def gen3080():
 		
 def gen1260():
 	try:
-		subprocess.check_call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
+		subprocess.call(['sed', '-ie', 's/create 0664 root utmp/create 0640 root utmp/', '/etc/logrotate.conf'])
 		print >> sys.stdout, "Configuring /etc/logrotate.conf so that rotated files are created with permission 0640"
-		subprocess.check_call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
+		subprocess.call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
 		print >> sys.stdout, "Configuring /etc/cron.daily/rpm so that installed rpm logs are created with permission 0640"
 		recursive_chmod('/var/log/', 0640)
-	except:
-		print >> sys.stderr, "There was a problem seting up gen1260"
+	except OSError, error:
+		print >> sys.stderr, "There was a problem seting up gen1260\n", error
 
 
 def gen580():
@@ -93,7 +93,7 @@ def audit():
 	'''
 	This fuction configurs auditd to comply with GEN002720 GEN002740 and GEN002760 specifications
 	###MAKE ME BETTER###
-	# I could use subprocess.check_call for this
+	# I could use subprocess.call for this
 	'''
 	# TURNING AUDITD ON
 	chkconfig_exit_status = os.system('chkconfig auditd on')
@@ -142,10 +142,10 @@ def snmp():
 	sys_gid = grp.getgrnam('sys')[2]
 	root_uid = 0
 	try:
-		print >> sys.stderr, "Changing ownership of snmpd config file"
+		print >> sys.stdout, "Changing ownership of snmpd config file"
 		os.chown('/etc/snmp/snmpd.conf', root_uid, sys_gid)
-	except OSError:
-		print>> sys.stderr, "There was a problem seting up permissions for --------:\n"
+	except OSError, error:
+		print>> sys.There, "was a problem seting up permissions for /etc/snmp/snmpd.conf:\n", error
 	'''
 	###FIX-ME###
 	# For the mib files it might be better to first collect the resulf of a find comand. This would be required if the customer setup the lastes custom assertion mib
@@ -166,8 +166,8 @@ def gen5400():
 		print >> sys.stdout, "Seting up permission and ownership of syslog"
 		os.chown('/etc/syslog.conf', 0, 0)
 		recursive_chmod('/etc/syslog.conf', 0640)
-	except OSError:
-		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n"
+	except OSError, error:
+		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n", error
 
 
 def lnx440():
