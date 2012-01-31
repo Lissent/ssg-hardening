@@ -70,6 +70,9 @@ def gen1260():
 		subprocess.call(['sed', '-ie', 's/chmod 0644 /chmod 0640 /', '/etc/cron.daily/rpm'])
 		print >> sys.stdout, "Configuring /etc/cron.daily/rpm so that installed rpm logs are created with permission 0640"
 		recursive_chmod('/var/log/', 0640)
+		# This last comand might break the system a bit but client have requested it any way.
+		subprocess.call(['sed', '-ie', 's/chmod 0664 /chmod 0640 /', '/etc/rc.d/rc.sysinit'])
+		print >> sys.stdout, "Configuring /etc/rc.d/rc.sysinit"
 	except OSError, error:
 		print >> sys.stderr, "There was a problem seting up gen1260\n", error
 
