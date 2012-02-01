@@ -12,17 +12,17 @@
 
 # Feel free to add below this line. See auditctl man page
 # This rule will comply with GEN002720 and will log any failde attemp at the syscall open
--a exit,always –S open –F success=0
+-a exit,always -S open -F success=0
 
 # This rule will comply with GEN002740 and will log any usage of the syscall unlink and rmdir
--a exit,always –S unlink –S rmdir
+-a exit,always -S unlink -S rmdir
 
 # This rule will comply with GEN002760 "Audit Administrative, Privileged, and Security Actions"
 -w /etc/audit/auditd.conf
 -w /etc/audit/audit.rules
--a exit,always –S stime –S acct –S reboot –S swapon
--a exit,always –S settimeofday –S setrlimit –S setdomainname
--a exit,always –S sched_setparam –S sched_setscheduler
+-a exit,always -S stime -S acct -S reboot -S swapon
+-a exit,always -S settimeofday -S setrlimit -S setdomainname
+-a exit,always -S sched_setparam -S sched_setscheduler
 
 #Comenting out the default rules as this are not required by the documentation
 #-a exit,always -S unlink -S rmdir
