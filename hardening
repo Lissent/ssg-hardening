@@ -170,7 +170,7 @@ def gen5400():
 		os.chown('/etc/syslog.conf', 0, 0)
 		recursive_chmod('/etc/syslog.conf', 0640)
 	except OSError, error:
-		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of /etc/rsyslog.conf:\n", error
+		print >> sys.stderr, "There was a problem setting up the ownership and/or permissions of the logging system:\n", error
 
 
 def lnx440():
