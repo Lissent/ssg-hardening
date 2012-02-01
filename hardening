@@ -161,7 +161,7 @@ def gen5400():
 		print >> sys.stdout, "Seting up permitions and ownership of rsyslog.conf"
 		os.chown('/etc/rsyslog.conf', 0, 0)
 		recursive_chmod('/etc/rsyslog.conf', 0640)
-
+		
 		# Changing permission and ownership of syslog
 		print >> sys.stdout, "Seting up permission and ownership of syslog"
 		os.chown('/etc/syslog.conf', 0, 0)
@@ -199,7 +199,7 @@ def menu_setup():
 	# set the desire main options										
 	parser.add_option("-a", "--all", action='store_true', dest='all',
 										help='Turn on all the compliance modules - This is the DEFAULT')
-
+										
 	parser.add_option('-q', '--quiet', action='store_false', dest='verbose',
 										help="Only error messages will be printed")
 										
