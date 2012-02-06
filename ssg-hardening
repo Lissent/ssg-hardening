@@ -85,7 +85,7 @@ def gen580():
 	'''
 	try:
 		print >> sys.stdout, "Seting up system-auth-ac"
-		shutil.copy2('./etc/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
+		shutil.copy2('/etc/ssg-hardening/pam.d/system-auth-ac', '/etc/pam.d/system-auth-ac')
 		os.chown('/etc/pam.d/system-auth-ac', 0, 0)
 		recursive_chmod('/etc/pam.d/system-auth-ac', 0644)
 	except OSError:
@@ -106,15 +106,9 @@ def audit():
 		print >> sys.stderr, "There was a problem when seting up Audit service at boot time. Exit with error code: ", chkconfig_ext_status
 		exit('error with chkconfig auditd on')
 	# SETING UP THE AUDIT.RULES FILE
-	'''
-	###FIX ME###
-	Using relative path names is bad. 
-	If this script is called form outside the folder were the remaining files are located this will not work.
-	Idealy we need a way to figure out the location of the script and the remaining files and then move to tha directory.
-	'''
 	try:
 		print >> sys.stdout, "Seting up auditd rules"
-		shutil.copy2('./etc/audit/audit.rules', '/etc/audit/audit.rules')
+		shutil.copy2('/etc/ssg-hardening/audit/audit.rules', '/etc/audit/audit.rules')
 		os.chown('/etc/audit/audit.rules', 0, 0)
 		recursive_chmod('/etc/audit/audit.rules', 0640)
 	except OSError, error:

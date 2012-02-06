@@ -27,7 +27,7 @@ This script will implement hardening for the Layer7 Technology Secure Spam Gatew
 
 %install
 rm -rf %{buildroot}
-install hardening -D %{buildroot}/usr/bin/ssg-hardening
+install ssg-hardening -D %{buildroot}/usr/bin/ssg-hardening
 install etc/audit/audit.rules  -D %{buildroot}/etc/ssg-hardening/audit/audit.rules
 install etc/pam.d/system-auth-ac  -D %{buildroot}/etc/ssg-hardening/pam.d/system-auth-ac
 
