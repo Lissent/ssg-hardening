@@ -1,6 +1,6 @@
 Name: ssg-hardening		
 Version: 1.0.0
-Release: 1%{?dist}
+Release: 1.el5
 Summary: A script used to preform hardening of the Layer7 Technology Secure Span Gateway
 
 Group: Applications/System
