@@ -1,12 +1,12 @@
 Name: ssg-hardening		
-Version: 1.0.0
+Version: 1.0.1
 Release: 1.el5
 Summary: A script used to preform hardening of the Layer7 Technology Secure Span Gateway
 
 Group: Applications/System
 License: ASL 2.0
 URL: https://github.com/Layer7tech/ssg-hardening
-Source0: v1.0.0
+Source0: ssg-hardening.tar.bz2
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
 
@@ -19,7 +19,7 @@ This script will implement hardening for the Layer7 Technology Secure Spam Gatew
 
 %prep
 # Will have the change the argument of -n for every new source as it is appended with the sha1sum of the commit
-%setup -q -n Layer7tech-ssg-hardening-12ecdd1
+%setup -q -n Hardening
 
 
 %build
@@ -27,7 +27,7 @@ This script will implement hardening for the Layer7 Technology Secure Spam Gatew
 
 %install
 rm -rf %{buildroot}
-install hardening -D %{buildroot}/usr/bin/ssg-hardening
+install ssg-hardening -D %{buildroot}/usr/bin/ssg-hardening
 install etc/audit/audit.rules  -D %{buildroot}/etc/ssg-hardening/audit/audit.rules
 install etc/pam.d/system-auth-ac  -D %{buildroot}/etc/ssg-hardening/pam.d/system-auth-ac
 
