@@ -27,7 +27,7 @@ This script will implement hardening for the Layer7 Technology Secure Spam Gatew
 
 %install
 rm -rf %{buildroot}
-install ssg-hardening -D %{buildroot}/usr/bin/ssg-hardening
+install hardening -D %{buildroot}/usr/bin/ssg-hardening
 install etc/audit/audit.rules  -D %{buildroot}/etc/ssg-hardening/audit/audit.rules
 install etc/pam.d/system-auth-ac  -D %{buildroot}/etc/ssg-hardening/pam.d/system-auth-ac
 
@@ -35,6 +35,10 @@ install etc/pam.d/system-auth-ac  -D %{buildroot}/etc/ssg-hardening/pam.d/system
 %clean
 rm -rf %{buildroot}
 
+%post
+ln -s /usr/bin/ssg-hardening /etc/cron.weekly/1ssg-hardening
+echo "If you are installing this rpm yourself please run 'ssg-hardening' to activate the hardening now."
+echo "Otherwise this will be run every week by con"
 
 %files
 %defattr(-,root,root,-)
