@@ -37,8 +37,12 @@ rm -rf %{buildroot}
 
 %post
 ln -s /usr/bin/ssg-hardening /etc/cron.weekly/1ssg-hardening
-echo "If you are installing this rpm yourself please run 'ssg-hardening' to activate the hardening now."
-echo "Otherwise this will be run every week by con"
+echo "Please run 'ssg-hardening' to activate the hardening now."
+echo "Otherwise this will be run every week by cond"
+
+%postun
+rm -f /etc/cron.weekly/1ssg-hardening
+echo "Attention this program does not restore the permition to there default values after you remove the rpm"
 
 %files
 %defattr(-,root,root,-)
