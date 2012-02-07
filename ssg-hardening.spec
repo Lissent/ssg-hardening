@@ -54,6 +54,6 @@ echo "Attention this program does not restore the permition to there default val
 %config %attr(644,-,-) %{_sysconfdir}/ssg-hardening/pam.d/system-auth-ac
 
 %changelog
-* Mon Feb 06 2012 Frederic Masi <fmasi@layer7tech.com> 1.0.0-0
+* Mon Feb 06 2012 Frederic Masi <fmasi@layer7tech.com> 1.0.1-1
 First release version.
 For more info on how we got to this point please see https://github.com/Layer7tech/ssg-hardening/commits/master
